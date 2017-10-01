@@ -15,9 +15,9 @@
 CRGB leds[NUM_LEDS];
 
 DEFINE_GRADIENT_PALETTE( RainDrop_gp ) {
-    0,   15,   15,   15, //Shadow
-  127,   31,   31,   31, //Darker
-  191,   63,   63,   63, //Dark
+    0,    3,    3,   3, //Shadow
+  127,    7,    7,    7, //Darker
+  191,   31,   31,   31, //Dark
   223,  127,  127,  127, //Light
   255,  255,  255,  255  //White
 };
