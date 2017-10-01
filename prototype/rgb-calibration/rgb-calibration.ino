@@ -23,7 +23,7 @@
 //
 //////////////////////////////////////////////////
 
-#define NUM_LEDS 60
+#define NUM_LEDS 56
 
 // Data pin that led data will be written out over
 #define DATA_PIN 5
@@ -45,7 +45,10 @@ void setup() {
       // FastLED.addLeds<WS2811, DATA_PIN, RGB>(leds, NUM_LEDS)
       // FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS)
       // FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS)
-      FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS)
+      FastLED.addLeds<WS2812B, 3, GRB>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+      FastLED.addLeds<WS2812B, 5, GRB>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+      FastLED.addLeds<WS2812B, 9, GRB>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+      FastLED.addLeds<WS2812B, 11, GRB>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
       // FastLED.addLeds<GW6205, DATA_PIN, RGB>(leds, NUM_LEDS)
       // FastLED.addLeds<GW6205_400, DATA_PIN, RGB>(leds, NUM_LEDS)
       // FastLED.addLeds<UCS1903, DATA_PIN, RGB>(leds, NUM_LEDS)
@@ -58,21 +61,32 @@ void setup() {
       // FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS)
       // FastLED.addLeds<SM16716, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS)
       // FastLED.addLeds<LPD8806, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS)
-      .setCorrection( TypicalLEDStrip );
 
   FastLED.setBrightness(  BRIGHTNESS );
 }
 
+int tick = 255;
+
+int counter = -1;
+
 void loop() {
-  for(int i = 0; i < NUM_LEDS/6; i++) {
-    int index = i*6;
-    leds[index++] = CRGB(255,0,0);      //RED
-    leds[index++] = CRGB(0,255,0);      //GREEN
-    leds[index++] = CRGB(0,255,0);      //GREEN
-    leds[index++] = CRGB(0,0,255);      //BLUE
-    leds[index++] = CRGB(255, 255,255); //WHITE
-    leds[index++] = CRGB(0,0,0);        //BLACK
+  for(int i = 0; i < NUM_LEDS/7; i++) {
+    int index = i*7;
+    leds[(index++) % NUM_LEDS] = CHSV( HUE_RED,    128, tick);
+    leds[(index++) % NUM_LEDS] = CHSV( HUE_ORANGE, 128, tick);
+    leds[(index++) % NUM_LEDS] = CHSV( HUE_GREEN,  128, tick);
+    leds[(index++) % NUM_LEDS] = CHSV( HUE_AQUA,   128, tick);
+    leds[(index++) % NUM_LEDS] = CHSV( HUE_BLUE,   128, tick);
+    leds[(index++) % NUM_LEDS] = CHSV( HUE_PURPLE, 128, tick);
+    leds[(index++) % NUM_LEDS] = CHSV( HUE_PINK,   128, tick);
   }
   FastLED.show();
-  FastLED.delay(1000);
+  tick = (tick + counter);
+  if(tick == 128) {
+    counter = 1;
+  }
+  if(tick == 255) {
+    counter = -1;
+  }
+  FastLED.delay(10);
 }
